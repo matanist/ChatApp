@@ -21,6 +21,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return entity;
     }
 
+    public async Task<int> CountAsync()
+    {
+        return await _dbSet.CountAsync();
+    }
+
     public async Task<T> DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);

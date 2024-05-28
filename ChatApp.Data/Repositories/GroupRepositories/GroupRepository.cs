@@ -14,6 +14,11 @@ public class GroupRepository : IGroupRepository
         return await _genericRepository.AddAsync(entity);
     }
 
+    public async Task<int> CountAsync()
+    {
+        return await _genericRepository.CountAsync();
+    }
+
     public async Task<Group> DeleteAsync(Group entity)
     {
         return await _genericRepository.DeleteAsync(entity);

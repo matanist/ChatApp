@@ -15,6 +15,11 @@ public class UserRepository : IUserRepository
         return await _genericRepository.AddAsync(entity);
     }
 
+    public async Task<int> CountAsync()
+    {
+        return await _genericRepository.CountAsync();
+    }
+
     public async Task<User> DeleteAsync(User entity)
     {
         return await _genericRepository.DeleteAsync(entity);

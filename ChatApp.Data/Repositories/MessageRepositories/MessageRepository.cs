@@ -14,6 +14,11 @@ public class MessageRepository : IMessageRepository
         return await _genericRepository.AddAsync(entity);
     }
 
+    public async Task<int> CountAsync()
+    {
+        return await _genericRepository.CountAsync();
+    }
+
     public async Task<Message> DeleteAsync(Message entity)
     {
         return await _genericRepository.DeleteAsync(entity);
