@@ -43,6 +43,7 @@ public class UserController : Controller
         };
     }
     [HttpPost]
+    
     public async Task<ReturnModel> Post([FromBody] UserCreateModel userCreateModel)
     {
         var newUserr = _mapper.Map<User>(userCreateModel);

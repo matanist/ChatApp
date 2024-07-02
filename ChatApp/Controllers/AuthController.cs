@@ -1,6 +1,9 @@
-﻿using ChatApp.Services;
+﻿using AutoMapper;
+using ChatApp.Data;
+using ChatApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ChatApp;
 [Route("api/[controller]")]
@@ -9,11 +12,13 @@ public class AuthController: Controller
 {
     private readonly IUserService _userService;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
 
-    public AuthController(IUserService userService, IConfiguration configuration)
+    public AuthController(IUserService userService, IConfiguration configuration, IMapper mapper)
     {
         _userService = userService;
         _configuration = configuration;
+        _mapper = mapper;
     }
     [HttpPost("login")]
     public async Task<ReturnModel> Login([FromBody] LoginModel loginModel)
@@ -40,6 +45,18 @@ public class AuthController: Controller
             Message = "Login successful",
             Data = token,
             StatusCode = 200
+        };
+    }
+    [HttpPost("register")]
+    public async Task<ReturnModel> Register([FromBody] UserCreateModel userCreateModel)
+    {
+        var newUserr = _mapper.Map<User>(userCreateModel);
+        var newUser = await _userService.AddAsync(newUserr);
+        return new ReturnModel{
+            Success = true,
+            Message = "User created successfully",
+            Data = newUser,
+            StatusCode = 201
         };
     }
 }
