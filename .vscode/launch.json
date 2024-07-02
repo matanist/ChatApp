@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "name": "C#: ChatApp Debug",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/ChatApp/ChatApp.csproj"
+    }
+  ]
+}
