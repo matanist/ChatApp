@@ -12,7 +12,7 @@ public static class JwtToken
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, tokenModel.Username),
-            new Claim(ClaimTypes.Role, tokenModel.Role),
+            new Claim(ClaimTypes.Role, tokenModel.Role ?? "User"),
         };
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenModel.SigninKey));

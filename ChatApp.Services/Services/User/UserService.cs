@@ -36,6 +36,11 @@ public class UserService : IUserService
         return await _userRepository.GetByUsernameAndPasswordAsync(username, password);
     }
 
+    public async Task<List<User>> GetUsersByNameAsync(string name)
+    {
+        return await _userRepository.GetUsersByNameAsync(name);
+    }
+
     public async Task<IReadOnlyList<User>> ListAllAsync(PaginationModel paginationModel)
     {
         return await _userRepository.ListAllAsync(paginationModel);
