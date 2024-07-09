@@ -93,7 +93,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthorization();
 //app.MapDefaultControllerRoute();
 app.UseEndpoints(endpoints =>
 {
@@ -101,6 +101,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<ChatHub>("/chathub");
 });
 
-app.UseAuthorization();
+
 app.Run();
 
