@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-builder.Services.AddSignalR();
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ChatAppDbContext>(options =>
 {
@@ -46,7 +46,7 @@ builder.Services.AddDbContext<ChatAppDbContext>(options =>
 
 builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();
-builder.Services.AddSingleton<ISignalrConnection, SignalrConnection>();
+
 //Cors
 var corsPolicyName = "CorsPolicy";
 builder.Services.AddCors(options =>
@@ -80,8 +80,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-
-
+builder.Services.AddSignalR(options=>
+{
+    options.EnableDetailedErrors = true;
+});
+builder.Services.AddSingleton<ISignalrConnection, SignalrConnection>();
+builder.Services.AddSingleton<IDictionary<string, string>>(options=> new Dictionary<string, string>());
 var app = builder.Build();
 app.UseCors(corsPolicyName);
 // Configure the HTTP request pipeline.
@@ -91,7 +95,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 //app.MapDefaultControllerRoute();

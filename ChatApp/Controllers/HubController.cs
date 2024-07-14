@@ -17,6 +17,8 @@ public class HubController : Controller
     {
         var connect = _signalrConnection.StartConnection();
         await connect.InvokeAsync("SendMessageToAll", "Admin", message);
+        //_signalrConnection.Values.Remove(connect.ConnectionId);
+        //_signalrConnection.Values.Where(x => x.ConnectionId == connect.ConnectionId).FirstOrDefault().Connection.Dispose();
         return Ok();
     }
 }
