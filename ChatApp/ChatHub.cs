@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp;
-[Authorize]
+// [Authorize]
 public class ChatHub : Hub
 {
     private readonly IDictionary<string, string> _connectedUsers;
@@ -39,11 +38,14 @@ public class ChatHub : Hub
         var user = Context.User.Identity.Name;
         if (userExists)
         {
+            //await Clients.User(connectionId).SendAsync("ReceiveMessageFromUser", user, message);
             await Clients.Client(connectionId).SendAsync("ReceiveMessageFromUser", user, message);
+            //return "Mesaj gönderildi"; //! Eklendi
         }
         else
         {
-            await Clients.Caller.SendAsync("ReceiveMessageFromUser","System", "User is not connected");
+            await Clients.Caller.SendAsync("ReceiveMessageFromUser", "System", "User is not connected");
+            //return "Kullanıcı bağlı değil"; //! Eklendi
         }
 
     }
