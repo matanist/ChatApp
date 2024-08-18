@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ChatApp.Data;
+using ChatApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp;
@@ -6,10 +8,14 @@ namespace ChatApp;
 public class ChatHub : Hub
 {
     private readonly IDictionary<string, string> _connectedUsers;
+    private readonly IMessageService _messageService;
+    private readonly IUserService _userService;
 
-    public ChatHub(IDictionary<string, string> connectedUsers)
+    public ChatHub(IDictionary<string, string> connectedUsers, IMessageService messageService, IUserService userService)
     {
         _connectedUsers = connectedUsers;
+        _messageService = messageService;
+        _userService = userService;
     }
 
     public override async Task OnConnectedAsync()
@@ -36,17 +42,28 @@ public class ChatHub : Hub
     {
         var userExists = _connectedUsers.TryGetValue(username, out var connectionId);
         var user = Context.User.Identity.Name;
+        var userSender = await _userService.GetUserByUsernameAsync(user);
+        var userReceiver = await _userService.GetUserByUsernameAsync(username);
+        var newMessage = new Message
+        {
+            Content = message,
+            UserId = userSender.Id,
+            CreatedAt = DateTime.Now,
+            GroupId = null,
+            IsDeleted = false,
+            UpdatedAt = DateTime.Now,
+            ReceiverUserId = userReceiver.Id,
+            ReceiverGroupId = null
+        };
         if (userExists)
         {
-            //await Clients.User(connectionId).SendAsync("ReceiveMessageFromUser", user, message);
             await Clients.Client(connectionId).SendAsync("ReceiveMessageFromUser", user, message);
-            //return "Mesaj gönderildi"; //! Eklendi
         }
         else
         {
             await Clients.Caller.SendAsync("ReceiveMessageFromUser", "System", "User is not connected");
-            //return "Kullanıcı bağlı değil"; //! Eklendi
         }
+        await _messageService.AddAsync(newMessage);
 
     }
     public async Task SendMessageToGroup(string group, string message)

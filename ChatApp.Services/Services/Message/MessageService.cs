@@ -1,4 +1,5 @@
 ﻿using ChatApp.Data;
+using ChatApp.Data.Models;
 
 namespace ChatApp.Services;
 
@@ -31,6 +32,8 @@ public class MessageService : IMessageService
         return await _messageRepository.GetByIdAsync(id);
     }
 
+
+
     public async Task<IReadOnlyList<Message>> ListAllAsync(PaginationModel paginationModel)
     {
         return await _messageRepository.ListAllAsync(paginationModel);
@@ -39,5 +42,10 @@ public class MessageService : IMessageService
     public async Task<Message> UpdateAsync(Message entity)
     {
         return await _messageRepository.UpdateAsync(entity);
+    }
+
+    public async Task<List<Message>> GetMessageHistory(MessageHistoryModel messageHistoryModel)
+    {
+        return await _messageRepository.GetMessageHistory(messageHistoryModel);
     }
 }

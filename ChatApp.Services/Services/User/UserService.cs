@@ -36,6 +36,8 @@ public class UserService : IUserService
         return await _userRepository.GetByUsernameAndPasswordAsync(username, password);
     }
 
+
+
     public async Task<List<User>> GetUsersByNameAsync(string name)
     {
         return await _userRepository.GetUsersByNameAsync(name);
@@ -49,5 +51,9 @@ public class UserService : IUserService
     public async Task<User> UpdateAsync(User entity)
     {
         return await _userRepository.UpdateAsync(entity);
+    }
+    public async Task<User> GetUserByUsernameAsync(string username)
+    {
+        return await _userRepository.GetUserByUsernameAsync(username);
     }
 }
